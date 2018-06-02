@@ -27,21 +27,16 @@ cdpr has been compiled and tested on the following Operating Systems:
 
 ## Command line options
 
+```
 -s: Silent mode; do not send CDP packet
-
 -c: Continuous capture; does not stop upon first reception
-
 -i: Interactive mode; lets user pick a device to listen on
-
 -l: Lists devices
-
 -d: Specify device to use (eth0, hme0, etc.)
-
 -h: Print usage
-
 -t: Time in seconds to abort waiting for packets (default is 300)
-
 -v[vv]: Set verbose mode
+```
 
 ## Compile instructions for Windows
 

@@ -32,6 +32,7 @@
 * 3.0.2 Added IPv6 support to the CDP send module
 * 3.0.3 Added LLDP reporting support
 *       Added LLDP to send module to trigger advertisements
+* 3.0.4 Added Npcap compatibility
 */
 
 #ifdef _MSC_VER
@@ -179,7 +180,7 @@ main(int argc, char *argv[])
 
 	/* Print out header */
 	printf("Cisco Discovery Protocol Reporter\n");
-	printf("Version 3.0.3 by Tim Dorssers\n\n");
+	printf("Version 3.0.4 by Tim Dorssers\n\n");
 
 	/* Check command-line options */
 	while((c = getopt(argc, argv, "aoscvhlid:t:")) !=EOF)
@@ -336,8 +337,13 @@ main(int argc, char *argv[])
 	else
 	{
 		i = 1;
-		for (d = alldevs; d; d = d->next)
-			iface[i++].dev = d;
+		for (d = alldevs; d; d = d->next) {
+			// Skip Npcap loopback adapter
+			if (strcmp(d->name, "\\Device\\NPF_Loopback") != 0)
+				iface[i++].dev = d;
+			else
+				num_devs--;
+		}
 	}
 
 	// Get MAC addresses
@@ -427,7 +433,7 @@ main(int argc, char *argv[])
 			// Check if packet has been received on an Ethernet adapter
 			if (packet && pcap_datalink(iface[i].handle) == DLT_EN10MB) {
 				// Do not decode our own cdp packet
-				if (memcmp(packet + 6, iface[i].addr, 6)) {
+				if (memcmp(packet + 6, iface[i].addr, 6) && memcmp(packet, iface[i].addr, 6)) {
 					num_packets++;
 					printf(" \n-------------------------\n");
 #ifdef WIN32

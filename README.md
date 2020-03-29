@@ -79,3 +79,6 @@ cdpr source tree. Your directory structure should looks something like this:
 3.0.3
 * Added LLDP reporting support
 * Added LLDP to send module to trigger advertisements
+
+3.0.4
+* Added Npcap compatibility

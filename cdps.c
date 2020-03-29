@@ -229,7 +229,7 @@ void lldp_send(IFACE *iface, u_int16_t ttl) {
 		memcpy(lldp_end, version, strlen(version));
 		lldp_end += (u_int16_t)strlen(version);
 		// Port description TLV
-		if (strlen(iface->dev->description)) {
+		if (iface->dev->description) {
 			type_and_length = PORT_DESCRIPTION_TLV_TYPE << 9;
 			type_and_length |= (u_int16_t)strlen(iface->dev->description);
 			put_unaligned(htons(type_and_length), (u_int16_t *)lldp_end);
